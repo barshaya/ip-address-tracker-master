@@ -1,19 +1,75 @@
 var mymap = L.map('mapid').setView([0,0], 1);
-L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=MEpxT42PsaWXDR1KXesP', {
-    attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
-}).addTo(mymap);
-var marker= L.marker([51.5,-0.09]).addTo(mymap);
 
-geocode();
+
+
+// Icon options
+var iconOptions = {
+    iconUrl: 'images/icon-location.svg',
+    iconSize: [25, 35]
+ }
+ 
+ // Creating a custom icon
+ var customIcon = L.icon(iconOptions);
+
+ var markerOptions = {
+    title: "MyLocation",
+    clickable: true,
+    draggable: true,
+    icon: customIcon
+ }
+
+
+var marker=L.marker([0,0],markerOptions).addTo(mymap);
+marker.addEventListener('move',function(){
+    mymap.setView();
+});
+
+
+const attribution = '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
+const tiles=L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=MEpxT42PsaWXDR1KXesP', {attribution});
+tiles.addTo(mymap);
+
+
+var submit = document.getElementsByClassName('btn-submit')[0];
+submit.addEventListener('click',geocode);
+
+
+
 function geocode(){
-    var location ='192.212.174.101';
+    var location=document.getElementsByClassName('location')[0];
     axios.get('https://geo.ipify.org/api/v1',{
         params:{
-            apiKey: 'at_5WA9XxxUJ0ZzHUaC4aIfE6IZpv8is',
-            ipAddress : location
+            ipAddress : location.value,
+            apiKey: 'at_5WA9XxxUJ0ZzHUaC4aIfE6IZpv8is'
         }
     }).then(function(response){
-        console.log(response);
+        
+        var lat=response.data.location.lat;
+        var lng=response.data.location.lng;
+      
+
+        var result = document.querySelectorAll('#result')[0]
+        result.classList.add('result');
+        result.innerHTML = ` 
+        <span class="result-item">
+            <h2>IP ADDRESS</h2>
+            <div>${response.data.ip}</div>
+        </span>
+        <span class="result-item">
+            <h2>LOCATION</h2>
+            <div>${response.data.location.city}, ${response.data.location.region}, ${response.data.location.postalCode}</div>
+        </span>
+        <span class="result-item">
+            <h2>TIMEZONE</h2>
+            <div>UTC ${response.data.location.timezone}</div>
+        </span>
+        <span class="result-item">
+            <h2>ISP</h2>
+            <div>${response.data.isp}</div>
+        </span>
+        `
+        marker.setLatLng([lat,lng],1)
+      
     }).catch(function (error) {
         console.log(error);        
     });

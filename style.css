@@ -6,7 +6,6 @@
 }
 
 
-
 header{
    background-image: url("images/pattern-bg.png");
    background-repeat: no-repeat;
@@ -20,9 +19,31 @@ header{
 .header-context{
     text-align: center;
     margin:100px;
+    z-index:1;
+}
+.result{
+    display: flex;
+    position: absolute;
+    border: 5px solid white;
+    background-color: white;
+    z-index: 1;
+    border-radius: 15px;
+    width: 600px;
+    top: 240px;
+    height: 100px;
+}
+
+.result-item{
+    padding:20px;
+}
+
+.result-item h2{
+    color: hsl(0, 0%, 59%);
+    font-size: 12px;
 }
 
 #mapid {
     height: 415px;
+    z-index:-1;
 }
 
