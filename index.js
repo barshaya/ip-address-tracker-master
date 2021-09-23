@@ -1,6 +1,7 @@
 var mymap = L.map('mapid').setView([0,0], 1);
-
-
+L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=MEpxT42PsaWXDR1KXesP', {
+    attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+}).addTo(mymap);
 
 // Icon options
 var iconOptions = {
@@ -18,22 +19,10 @@ var iconOptions = {
     icon: customIcon
  }
 
-
 var marker=L.marker([0,0],markerOptions).addTo(mymap);
-marker.addEventListener('move',function(){
-    mymap.setView();
-});
-
-
-const attribution = '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>';
-const tiles=L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=MEpxT42PsaWXDR1KXesP', {attribution});
-tiles.addTo(mymap);
-
 
 var submit = document.getElementsByClassName('btn-submit')[0];
 submit.addEventListener('click',geocode);
-
-
 
 function geocode(){
     var location=document.getElementsByClassName('location')[0];
